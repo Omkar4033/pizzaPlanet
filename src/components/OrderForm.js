@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-const OrderForm = () => {
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+const OrderForm = ({ curruser }) => {
   const [confirm, setconfirm] = useState(false);
   const [formData, setFormData] = useState({
     size: "",
@@ -9,7 +11,7 @@ const OrderForm = () => {
     toppings: [],
     quantity: 1,
   });
-
+  const notify = () => toast("Added to cart !");
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -21,13 +23,13 @@ const OrderForm = () => {
     console.log("inside the submit function");
 
     const { size, crust, toppings, quantity } = formData;
-    
+
     if (!size || !crust || toppings.length === 0 || quantity < 1) {
       alert("Please fill all the required fields.");
       return;
     } else {
       const pizza = {
-        name: "SureshR",
+        name: curruser.name,
         toppings: toppings,
         crust: crust,
         size: size,
@@ -37,6 +39,7 @@ const OrderForm = () => {
         const res = await axios.post("/api/pizzas", pizza);
         console.log(res);
         setconfirm(true);
+        notify();
         setFormData({
           size: "",
           crust: "",
@@ -156,6 +159,19 @@ const OrderForm = () => {
               >
                 Order Now
               </button>
+              
+              <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
               {confirm && (
                 <Link to="/confirmation">
                   <p>Go to Confirmation page</p>
