@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 // import CartItem from './CartItem';
 import axios from 'axios'
+import Checkout from './components/Checkout';
 
-const Cart = () => {
+const Cart = ({curruser}) => {
   const [cartItems, setCartItems] = useState([]);
   
   useEffect(() => {
@@ -32,9 +33,10 @@ const Cart = () => {
       ))} 
       <div className="flex justify-start mt-4">
         <span className="font-bold">Subtotal:</span>
-        <button >₹{subtotal.toFixed(2)}</button>
+        <span  >₹{subtotal.toFixed(2)}</span>
       </div>
-      <button className="bg-green-500 text-white px-4 py-2 mt-4">Proceed to Checkout</button>
+        <Checkout cartItems={cartItems} subtotal={subtotal.toFixed(2)}/>
+     
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const App = () => {
             <Route path="/menu" element={<Menu />} />
             <Route path="/login" element={<Login updateUser={updateUser} />} />
             <Route path="/register" element={<Register />} />
-            <Route  path="/cart" element={<Cart />} />
+            <Route curruser={curruser} path="/cart" element={<Cart />} />
             {curruser && (
               <Route exact path="/" element={<Hero/>} />
             ) }
