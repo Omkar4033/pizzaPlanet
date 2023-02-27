@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 const OrderForm = ({ curruser }) => {
-  const [confirm, setconfirm] = useState(false);
   const [formData, setFormData] = useState({
     size: "",
     crust: "",
@@ -38,7 +36,7 @@ const OrderForm = ({ curruser }) => {
       try {
         const res = await axios.post("/api/pizzas", pizza);
         console.log(res);
-        setconfirm(true);
+
         notify();
         setFormData({
           size: "",
@@ -153,13 +151,12 @@ const OrderForm = ({ curruser }) => {
                 </select>
               </div>
               <button
-                onClick={setconfirm}
                 type="submit"
                 className="bg-yellow-500  text-white py-3 my-10 px-6 rounded-full font-bold text-lg shadow-lg hover:bg-yellow-600 "
               >
                 Order Now
               </button>
-              
+
               <ToastContainer
                 position="top-center"
                 autoClose={5000}
@@ -172,11 +169,6 @@ const OrderForm = ({ curruser }) => {
                 pauseOnHover
                 theme="light"
               />
-              {confirm && (
-                <Link to="/confirmation">
-                  <p>Go to Confirmation page</p>
-                </Link>
-              )}
             </div>
           </form>
         </div>

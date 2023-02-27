@@ -1,34 +1,95 @@
-import React from 'react'
-import StripeCheckout from 'react-stripe-checkout'
-import axios from 'axios';
-const Checkout = ({subtotal,cartItems,curruser}) => {
+import React, { useState } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import axios from "axios";
 
+const Checkout = ({
+  subtotal,
+  cartItems,
+  onPaymentComplete,
+  onPaymentError,
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [errorMessage, setErrorMessage] = useState(null);
 
-const tokenHandler=async(token)=>{
-    try {
-        const res=await axios.post('/api/orders/placeorder',{token,subtotal,curruser,cartItems});
-        console.log(res);
-    } catch (error) {
-        console.log(error);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+      billing_details: {
+        name: "John Doe",
+        email: "johndoe@example.com",
+        address: {
+          line1: "123 Main St",
+          line2: "Apartment 5",
+          city: "New York",
+          state: "NY",
+          postal_code: "10001",
+          country: "US",
+        },
+      },
+    });
+
+    if (!error) {
+      try {
+        const response = await axios.post("/api/stripes/placeorder", {
+          subtotal: subtotal,
+          payment_method: paymentMethod.id,
+          cartItems: cartItems,
+          currency: "inr",
+        });
+        onPaymentComplete(true);
+        console.log(response.data);
+      } catch (error) {
+        setErrorMessage(error.message);
+        onPaymentComplete(false);
+      }
+    } else {
+      setErrorMessage(error.message);
+      onPaymentComplete(false);
+      onPaymentError(error.message);
     }
-}
+  };
 
+  const CARD_ELEMENT_OPTIONS = {
+    style: {
+      base: {
+        fontSize: '16px',
+        color: '#32325d',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      },
+    },
+  };
   return (
-    <div>
-        <StripeCheckout
-        amount={subtotal*100}
-        shippingAddress
-        billingAddress
-        token={tokenHandler}
-        currency="INR"
-        stripeKey='pk_test_51MfQSHSBGOkkt5PzZgKErm86dw8LUj6EdhvULzoLf060lnQvWeHWBYhNxyLF8jd0cjB2G33o8L1Iy6QGfdYFEDCg00lRlxT1tf'
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label
+          htmlFor="card-element"
+          className="block text-gray-700 font-bold mb-2"
         >
-            <button className='bg-green-500  text-white px-4 rounded-md py-2 mt-4' >
-                pay now
-            </button>
-        </StripeCheckout>
-    </div>
-  )
-}
+          Credit or debit card
+        </label>
+        <div className="p-2 border border-gray-300 rounded">
+          <CardElement
+            options={CARD_ELEMENT_OPTIONS}
+          />
+        </div>
+      </div>
+      {errorMessage && (
+        <div className="text-red-500 font-bold mb-4">{errorMessage}</div>
+      )}
+      <button
+        type="submit"
+        className="bg-green-500  block mx-auto hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+        disabled={!stripe}
+      >
+        Pay ₹{subtotal}
+      </button>
+    </form>
+  );
+};
 
-export default Checkout
+export default Checkout;

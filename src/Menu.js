@@ -18,7 +18,7 @@ const Menu = () => {
       <h2 className="text-3xl font-bold mb-4">Menu</h2>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1  gap-4">
         {menu.map((item) => (
-          <div key={item.id} className="bg-white  shadow-md rounded-lg overflow-hidden">
+          <div key={item._id} className="bg-white  shadow-md rounded-lg overflow-hidden">
             <img src={process.env.PUBLIC_URL+"Images/sample.jpg"} alt={item.name} className="h-64 w-full object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-bold mb-2">{item.toppings}</h3>
