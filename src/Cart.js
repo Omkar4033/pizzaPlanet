@@ -17,10 +17,12 @@ const Cart = ({ curruser }) => {
   const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
-    <div className="container flex justify-around  mx-auto  px-4 py-8">
-      {!showpayment && <div>
-        <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
-        <div className="container  m-auto">
+    <div className="container flex my-5">
+      <div className="first  w-1/2 flex ">
+
+      {<div className="flex-col m-auto" >
+        <h1 className="text-2xl  font-bold mb-4">Your Cart</h1>
+        <div className="container  ">
           {cartItems.map((item) => (
             <div key={item._id} className="flex items-center">
               <img
@@ -46,7 +48,11 @@ const Cart = ({ curruser }) => {
             </button>
         </div>
       </div>}
+      </div>
+      <div className="second   w-1/2 flex m-auto ">
+
       {showpayment && <PaymentForm setShowpayment={setShowpayment} cartItems={cartItems} subtotal={subtotal.toFixed(2)} />}
+      </div>
     </div>
   );
 };

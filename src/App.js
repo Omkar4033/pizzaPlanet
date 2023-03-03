@@ -11,6 +11,7 @@ import Register from "./Register";
 const App = () => {
   useEffect(() => {
     setCurruser(JSON.parse(localStorage.getItem("MypizzaUser")));
+
   }, []);
 
   const [curruser, setCurruser] = useState({});
@@ -23,8 +24,8 @@ const App = () => {
   return (
     <>
       <Router>
-        <div>
           <Navbar curruser={curruser} updateUser={updateUser} />
+        <div>
           <Routes>
             <Route path="/menu" element={<Menu />} />
             <Route path="/login" element={<Login updateUser={updateUser} />} />

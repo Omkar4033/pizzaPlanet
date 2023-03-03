@@ -26,7 +26,7 @@ const Login = ({ updateUser }) => {
       };
       const { data } = await axios.post("/api/users/login", user);
       updateUser(data);
-      window.location.assign('/');
+       window.location.assign('/');
 
     }
   };
