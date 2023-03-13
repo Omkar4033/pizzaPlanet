@@ -1,84 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({ cart, addToCart }) => {
   const [menu, setmenu] = useState([]);
-  const [cartitems, setCartitems] = useState({
-    id: "",
-    size: "",
-    quantity: 1,
-  
-  });
- 
-  const handleInputChange = (event) => {
-    const {id, name, value } = event.target;
-    if(id === "")
-    {
-      setCartitems({ ...cartitems, [name]: value,id:id });
-    }
-    if(event.target.id === cartitems.id)
-    setCartitems({ ...cartitems, [name]: value,[id]:id });
-  };
-  
+
+  const [varient, setVarient] = useState("small");
+  const [quantity, setQuantity] = useState(1);
+
   useEffect(() => {
     const fetchmenu = async () => {
-      const {data} = await axios.get('/api/pizzas');
+      const { data } = await axios.get("/api/pizzas");
       setmenu(data);
     };
     fetchmenu();
   }, []);
 
-  const addToCart=(item)=>{
-    console.log(cartitems);
-  }
+  const AddToCart = (item, varient, quantity) => {
+    var cartItem = {
+      name: item.name,
+      varient: varient,
+      quantity: quantity,
+      prices: item.prices,
+      Itemprice: item.prices[0][varient] * quantity,
+    };
+    addToCart(cartItem);
+  };
 
   return (
     <div className="container  my-10">
       <h2 className="text-3xl font-bold mb-4">Menu</h2>
       <div className="grid lg:grid-cols-3   m-auto md:grid-cols-2 sm:grid-cols-1  gap-4">
         {menu.map((item) => (
-          <div key={item._id} className="bg-white   shadow-md rounded-lg overflow-hidden">
-              <h3 className="text-xl m-3 font-bold sm:text-center md:text-start inset-0 mb-2">{item.toppings}</h3>
-            <img src={process.env.PUBLIC_URL+"Images/sample.jpg"} alt={item.name} className="h-64 w-full object-contain" />
+          <div
+            key={item._id}
+            className="bg-white   shadow-md rounded-lg overflow-hidden"
+          >
+            <h3 className="text-xl m-3 font-bold sm:text-center md:text-start inset-0 mb-2">
+              {item.name}
+            </h3>
+            <img
+              src={process.env.PUBLIC_URL + "Images/sample.jpg"}
+              alt={item.name}
+              className="h-64 w-full object-contain"
+            />
             <div className="p-4">
-             <div className="new flex ">
-             <select
+              <div className="new flex ">
+                <select
                   className="shadow appearance-none border  w-1/2 mx-1 rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id={`${item._id}`.size}
+                  id="one"
                   name="size"
-                  // value={size}
-                  onChange={handleInputChange}
+                  value={varient}
+                  onChange={(e) => setVarient(e.target.value)}
                 >
-                  <option value="">Varient</option>
-                  <option value="Small">Small</option>
-                  <option value="Medium">Medium</option>
-                  <option value="large">Large</option>
+                  {item.varients.map((varient) => {
+                    return (
+                      <option key={varient} value={varient}>
+                        {varient}
+                      </option>
+                    );
+                  })}
                 </select>
                 <select
                   className="shadow appearance-none border rounded  w-1/2 mx-1  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id={`${item._id}`.quantity}
-                  placeholder='Select Quantity'
+                  id="two"
+                  placeholder="Select Quantity"
                   name="quantity"
-                  //value={formData.size}
-                  onChange={handleInputChange}
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
                 >
-                   <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
+                  {[...Array(10).keys()].map((x, idx) => {
+                    return <option value={idx + 1}>{idx + 1}</option>;
+                  })}
                 </select>
-             </div>
-             <div className="second flex justify-around mt-4">
-              <div className="text-gray-700 my-auto font-medium">Price : ₹{item.price.toFixed(2)}</div>
-              <button
-                className="bg-yellow-500 text-white py-2 px-4 rounded  hover:bg-yellow-600 transition-colors duration-300"
-                 onClick={() => addToCart(item)}
-              >
-                Add to cart
-              </button>
-
-             </div>
+              </div>
+              <div className="second flex justify-around mt-4">
+                <div className="text-gray-700 my-auto font-medium">
+                  Price : {item.prices[0][varient] * quantity}
+                </div>
+                <button
+                  className="bg-yellow-500 text-white py-2 px-4 rounded  hover:bg-yellow-600 transition-colors duration-300"
+                  onClick={() => AddToCart(item, varient, quantity)}
+                >
+                  Add to cart
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -89,6 +95,5 @@ const Menu = () => {
     </div>
   );
 };
-
 
 export default Menu;

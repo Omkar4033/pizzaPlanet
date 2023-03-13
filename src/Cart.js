@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PaymentForm from "./components/PaymentForm";
 
-const Cart = ({ curruser }) => {
-  const [cartItems, setCartItems] = useState([]);
+const Cart = ({ curruser,cart,addToCart }) => {
+  const [cartItems, setCart] = useState([]);
   const [showpayment,setShowpayment]=useState(false);
   useEffect(() => {
     const fetchCartItems = async () => {
       const { data } = await axios.get("/api/pizzas");
       console.log(data);
-      setCartItems(data);
+      setCart(data);
     };
     fetchCartItems();
   }, []);
-
-  const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
-
+  console.log("current user is: ",curruser);
+  console.log("value in cart is",cart);
+  // const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
+  const subtotal=400;
   return (
     <div className="container flex my-5">
       <div className="first  w-1/2 flex ">
@@ -31,11 +32,12 @@ const Cart = ({ curruser }) => {
                 alt={item.name}
               />
               <div>
-                <h2 className="text-lg">{item.toppings}</h2>
+                <h2 className="text-lg">{item.name}</h2>
                 <p className="text-gray-500 text-sm">Price: ₹{item.price}</p>
               </div>
             </div>
           ))}
+          
           <div className="flex justify-start mt-4">
             <span className="font-bold">Subtotal:</span>
             <span>₹{subtotal.toFixed(2)}</span>

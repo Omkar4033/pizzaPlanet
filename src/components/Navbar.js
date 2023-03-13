@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
-
-const Navbar = ({ curruser, updateUser}) => {
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+const Navbar = ({ cart, curruser, updateUser}) => {
   const [dropdown, setDropdown] = useState(false);
 
   const setLogout=()=>{
     updateUser(null);
  
   }
+
+  console.log("value in navbar is",cart);
 
   return (
     <nav className="bg-white inset-0 shadow-lg">
@@ -40,8 +42,8 @@ const Navbar = ({ curruser, updateUser}) => {
           <div className="right flex">
             {curruser ? (
               <div className="user flex inset-0 py-6">
-                <div className="relative inline-block text-left">
-                  <div>
+                <div className="relative justify-center flex text-left">
+                  <div className="justify-center">
                     <button
                       type="button"
                       className="delay-100  inline-flex w-full justify-center  bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm  "
@@ -108,10 +110,12 @@ const Navbar = ({ curruser, updateUser}) => {
             )}
             <Link
               to="/cart"
-              className="py-6 px-3 text-gray-600 hover:text-gray-800"
+              className="py-6  text-gray-600 hover:text-gray-800"
             >
-              Cart
+             <ShoppingBagOutlinedIcon/>
+
             </Link>
+              <span class="text-md h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-3  bg-orange-500 text-white">{cart.length}</span>
           </div>
         </div>
       </div>
