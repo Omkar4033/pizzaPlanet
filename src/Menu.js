@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const Menu = ({ cart, addToCart }) => {
+const Menu = ({  addToCart }) => {
   const [menu, setmenu] = useState([]);
 
   const [varient, setVarient] = useState("small");
@@ -27,13 +27,14 @@ const Menu = ({ cart, addToCart }) => {
     addToCart(cartItem);
   };
 
+
   return (
     <div className="container  my-10">
       <h2 className="text-3xl font-bold mb-4">Menu</h2>
       <div className="grid lg:grid-cols-3   m-auto md:grid-cols-2 sm:grid-cols-1  gap-4">
         {menu.map((item) => (
           <div
-            key={item._id}
+            key={JSON.stringify(item._id)}
             className="bg-white   shadow-md rounded-lg overflow-hidden"
           >
             <h3 className="text-xl m-3 font-bold sm:text-center md:text-start inset-0 mb-2">
@@ -53,9 +54,9 @@ const Menu = ({ cart, addToCart }) => {
                   value={varient}
                   onChange={(e) => setVarient(e.target.value)}
                 >
-                  {item.varients.map((varient) => {
+                  {item.varients.map((varient,index) => {
                     return (
-                      <option key={varient} value={varient}>
+                      <option key={index} value={varient}>
                         {varient}
                       </option>
                     );

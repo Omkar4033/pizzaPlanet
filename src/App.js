@@ -8,71 +8,94 @@ import ConfirmationPage from "./components/ConfirmationPage";
 import Cart from "./Cart";
 import Login from "./Login";
 import Register from "./Register";
+import Orders from "./components/Orders";
 const App = () => {
+  const [curruser, setCurruser] = useState({});
+  const [cart, setcart] = useState([]);
   useEffect(() => {
     try {
       setCurruser(JSON.parse(localStorage.getItem("MypizzaUser")));
-      if(localStorage.getItem("cart")){
+      if (localStorage.getItem("cart")) {
         setcart(JSON.parse(localStorage.getItem("cart")));
       }
     } catch (error) {
       console.error(error);
       localStorage.clear();
     }
+  }, [cart]);
 
-  }, []);
+  console.log(curruser);
 
-  const [curruser, setCurruser] = useState({});
-  const [cart, setcart] = useState([]);
-  // const [subTotal,setsubTotal]=useState(0);
   const updateUser = (user) => {
     localStorage.setItem("MypizzaUser", JSON.stringify(user));
     setCurruser(user);
   };
-  const saveCart=(mycart)=>{
-      localStorage.setItem("cart",mycart);
-      setcart(mycart);
-  }
+  const saveCart = (mycart) => {
+    localStorage.setItem("cart", mycart);
+    setcart(mycart);
+  };
 
-  const addToCart=(cartItem,varient,quantity)=>{
-    let newCart=cart;
+  const addToCart = (cartItem, varient, quantity) => {
+    let newCart = cart;
     const index = cart.indexOf(cartItem);
-    if(index>=0)
-    {
-        // newCart[index].varient=varient,
-        // newCart[index].quantity=quantity
-    }
-    else
-    {
+    if (index >= 0) {
+      const filtered = cart.filter((item) => item.name === cartItem.name);
+      filtered.varient = varient;
+      filtered.quantity = quantity;
+      newCart[index] = filtered;
+    } else {
       newCart = [].concat(cart, cartItem);
     }
-      setcart(newCart);
-      saveCart(newCart);
-  
+    setcart(newCart);
+    saveCart(newCart);
+  };
+  const RemoveFromCart = (cartItem, varient, quantity) => {
+    let newCart = cart;
+    const index = cart.indexOf(cartItem);
+    if (index >= 0) {
+      const filtered = cart.filter((item) => item !== cartItem);
+      newCart = filtered;
+    } else {
+      newCart = [].concat(cart, cartItem);
     }
-  
+    setcart(newCart);
+    saveCart(newCart);
+  };
 
   return (
     <>
       <Router>
-          <Navbar cart={cart}  curruser={curruser} updateUser={updateUser} />
+        <Navbar cart={cart} curruser={curruser} updateUser={updateUser} />
         <div>
           <Routes>
-            <Route path="/menu" element={<Menu cart={cart} addToCart={addToCart} />} />
+            <Route
+              path="/menu"
+              element={<Menu cart={cart} addToCart={addToCart} />}
+            />
             <Route path="/login" element={<Login updateUser={updateUser} />} />
             <Route path="/register" element={<Register />} />
-            <Route  path="/cart" element={<Cart curruser={curruser} cart={cart} addToCart={addToCart} />} />
-            {curruser && (
-              <Route exact path="/" element={<Hero/>} />
-            ) }
-            { !curruser && 
-              <Route
-                path="/"
-                element={<Login updateUser={updateUser} />}
-              />
-           }
-            <Route curruser={curruser} path="/OrderForm" element={<OrderForm />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  curruser={curruser}
+                  cart={cart}
+                  RemoveFromCart={RemoveFromCart}
+                  addToCart={addToCart}
+                  
+                />
+              }
+            />
+            {curruser && <Route exact path="/" element={<Hero />} />}
+            {!curruser && (
+              <Route path="/" element={<Login updateUser={updateUser} />} />
+            )}
+            <Route
+              path="/OrderForm"
+              element={<OrderForm curruser={curruser} />}
+            />
             <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/orders" element={<Orders />} />
           </Routes>
         </div>
       </Router>

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import LogoutIcon from '@mui/icons-material/Logout';
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-const Navbar = ({ cart, curruser, updateUser}) => {
+import LogoutIcon from "@mui/icons-material/Logout";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+const Navbar = ({ cart, curruser, updateUser }) => {
   const [dropdown, setDropdown] = useState(false);
 
-  const setLogout=()=>{
+  const setLogout = () => {
     updateUser(null);
- 
-  }
+  };
 
-  console.log("value in navbar is",cart);
+  console.log("value in navbar is", cart);
 
   return (
     <nav className="bg-white inset-0 shadow-lg">
@@ -75,24 +74,23 @@ const Navbar = ({ cart, curruser, updateUser}) => {
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="menu-button"
-                    
                     >
-                      <div className="py-1" >
-                        <a
-                          href="/account"
+                      <div className="py-1">
+                        <Link
+                        to="/orders"
                           className="text-gray-700 block  px-4 py-2 text-sm"
                         >
-                          Account
-                        </a>
-                      <hr className="text-black" />
-                         <Link to='/login'>
+                          Orders
+                        </Link>
+                        <hr className="text-black" />
+                        <Link to="/login">
                           <button
                             className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
                             onClick={setLogout}
                           >
-                          <LogoutIcon/>  Log out
+                            <LogoutIcon /> Log out
                           </button>
-                         </Link>
+                        </Link>
                       </div>
                     </div>
                   )}
@@ -112,10 +110,11 @@ const Navbar = ({ cart, curruser, updateUser}) => {
               to="/cart"
               className="py-6  text-gray-600 hover:text-gray-800"
             >
-             <ShoppingBagOutlinedIcon/>
-
+              <ShoppingBagOutlinedIcon />
             </Link>
-              <span class="text-md h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-3  bg-orange-500 text-white">{cart.length}</span>
+            <span className="text-sm h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-4  bg-orange-500 text-white">
+              {cart.length}
+            </span>
           </div>
         </div>
       </div>

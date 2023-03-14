@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState,useEffect } from "react";
 import PaymentForm from "./components/PaymentForm";
-
-const Cart = ({ curruser,cart,addToCart }) => {
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+const Cart = ({ curruser,cart,addToCart,RemoveFromCart }) => {
   const [cartItems, setCart] = useState([]);
   const [showpayment,setShowpayment]=useState(false);
   useEffect(() => {
-    const fetchCartItems = async () => {
-      const { data } = await axios.get("/api/pizzas");
-      console.log(data);
-      setCart(data);
-    };
-    fetchCartItems();
-  }, []);
+    
+    setCart(cart);
+  
+  }, [cart])
+  
   console.log("current user is: ",curruser);
   console.log("value in cart is",cart);
-  // const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
-  const subtotal=400;
+  
+   const subtotal = cartItems.reduce((total, item) => total + item.Itemprice, 0);
+  
   return (
     <div className="container flex my-5">
       <div className="first  w-1/2 flex ">
@@ -33,8 +31,11 @@ const Cart = ({ curruser,cart,addToCart }) => {
               />
               <div>
                 <h2 className="text-lg">{item.name}</h2>
-                <p className="text-gray-500 text-sm">Price: ₹{item.price}</p>
+                <p className="text-gray-500 text-sm">Price: ₹{item.Itemprice}</p>
+                <p className="text-gray-500 text-sm">Varient: {item.varient}</p>
+                <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
               </div>
+              <button onClick={()=>RemoveFromCart(item)}><DeleteOutlineOutlinedIcon style={{color:"orangered"}}/></button>
             </div>
           ))}
           
@@ -53,7 +54,7 @@ const Cart = ({ curruser,cart,addToCart }) => {
       </div>
       <div className="second   w-1/2 flex m-auto ">
 
-      {showpayment && <PaymentForm setShowpayment={setShowpayment} cartItems={cartItems} subtotal={subtotal.toFixed(2)} />}
+      {showpayment && <PaymentForm curruser={curruser} setShowpayment={setShowpayment} cartItems={cartItems} subtotal={subtotal.toFixed(2)} />}
       </div>
     </div>
   );

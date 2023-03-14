@@ -3,6 +3,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "axios";
 
 const Checkout = ({
+  curruser,
   subtotal,
   cartItems,
   onPaymentComplete,
@@ -34,6 +35,7 @@ const Checkout = ({
     if (!error) {
       try {
         const response = await axios.post("/api/stripes/placeorder", {
+          curruser:curruser,
           subtotal: subtotal,
           payment_method: paymentMethod.id,
           cartItems: cartItems,
