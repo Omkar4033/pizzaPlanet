@@ -34,7 +34,7 @@ const Checkout = ({
 
     if (!error) {
       try {
-        const response = await axios.post("/api/stripes/placeorder", {
+        const response = await axios.post("/api/orders/placeorder", {
           curruser:curruser,
           subtotal: subtotal,
           payment_method: paymentMethod.id,

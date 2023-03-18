@@ -82,7 +82,6 @@ const App = () => {
                   cart={cart}
                   RemoveFromCart={RemoveFromCart}
                   addToCart={addToCart}
-                  
                 />
               }
             />
@@ -95,7 +94,15 @@ const App = () => {
               element={<OrderForm curruser={curruser} />}
             />
             <Route path="/confirmation" element={<ConfirmationPage />} />
-            <Route path="/orders" element={<Orders />} />
+            {curruser && (
+              <Route path="/orders" element={<Orders curruser={curruser} />} />
+            )}
+            { curruser &&  curruser.isAdmin && (
+              <Route
+                path="/admin"
+                element={<Login updateUser={updateUser} />}
+              />
+            )}
           </Routes>
         </div>
       </Router>

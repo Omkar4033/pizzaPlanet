@@ -70,14 +70,14 @@ const Navbar = ({ cart, curruser, updateUser }) => {
                   </div>
                   {dropdown && (
                     <div
-                      className="absolute right-0 z-10 mt-2 w-36 origin-top-right border-black rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      className="absolute right-0 z-10 mt-8 w-36 origin-top-right border-black rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="menu-button"
                     >
                       <div className="py-1">
                         <Link
-                        to="/orders"
+                          to="/orders"
                           className="text-gray-700 block  px-4 py-2 text-sm"
                         >
                           Orders
@@ -112,9 +112,11 @@ const Navbar = ({ cart, curruser, updateUser }) => {
             >
               <ShoppingBagOutlinedIcon />
             </Link>
-            <span className="text-sm h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-4  bg-orange-500 text-white">
-              {cart.length}
-            </span>
+            {cart.length > 0 && (
+              <span className="text-sm h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-4  bg-orange-500 text-white">
+                {cart.length}
+              </span>
+            )}
           </div>
         </div>
       </div>

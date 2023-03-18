@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Checkout from "./Checkout";
-
+import { Link } from "react-router-dom";
 const stripePromise = loadStripe(
   "pk_test_51MfQSHSBGOkkt5PzZgKErm86dw8LUj6EdhvULzoLf060lnQvWeHWBYhNxyLF8jd0cjB2G33o8L1Iy6QGfdYFEDCg00lRlxT1tf"
 );
@@ -39,7 +39,7 @@ const PaymentForm = ({ curruser,cartItems, subtotal, setShowpayment }) => {
         close
       </span>
       {paymentComplete && <p className="text-green-500">Payment complete!</p>}
-      {paymentComplete && window.location.assign('/confirmation')}
+      {paymentComplete && <Link className='underline-offset-1' to='/confirmation'>go to confirmation page</Link>}
       {paymentError && <p className="text-red-500">{paymentError}</p>}
     </div>
   );

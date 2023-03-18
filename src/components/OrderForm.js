@@ -73,6 +73,7 @@ const OrderForm = ({ curruser }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="size"
                   name="size"
+                  multiple={false}
                   value={formData.size}
                   onChange={handleInputChange}
                 >
@@ -93,6 +94,7 @@ const OrderForm = ({ curruser }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="toppings"
                   name="toppings"
+                  multiple={false}
                   value={formData.toppings}
                   onChange={handleInputChange}
                 >
@@ -115,6 +117,7 @@ const OrderForm = ({ curruser }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="crust"
                   name="crust"
+                  multiple={false}
                   value={formData.crust}
                   onChange={handleInputChange}
                 >
@@ -138,6 +141,7 @@ const OrderForm = ({ curruser }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="quantity"
                   name="quantity"
+                  multiple={false} 
                   value={formData.quantity}
                   onChange={handleInputChange}
                 >

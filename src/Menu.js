@@ -32,9 +32,9 @@ const Menu = ({  addToCart }) => {
     <div className="container  my-10">
       <h2 className="text-3xl font-bold mb-4">Menu</h2>
       <div className="grid lg:grid-cols-3   m-auto md:grid-cols-2 sm:grid-cols-1  gap-4">
-        {menu.map((item) => (
+        {menu.map((item ,index) => (
           <div
-            key={JSON.stringify(item._id)}
+            key={index+30}
             className="bg-white   shadow-md rounded-lg overflow-hidden"
           >
             <h3 className="text-xl m-3 font-bold sm:text-center md:text-start inset-0 mb-2">
