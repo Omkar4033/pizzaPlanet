@@ -34,7 +34,7 @@ const Menu = ({  addToCart }) => {
       <div className="grid lg:grid-cols-3   m-auto md:grid-cols-2 sm:grid-cols-1  gap-4">
         {menu.map((item ,index) => (
           <div
-            key={index+30}
+            key={item._id}
             className="bg-white   shadow-md rounded-lg overflow-hidden"
           >
             <h3 className="text-xl m-3 font-bold sm:text-center md:text-start inset-0 mb-2">
@@ -54,9 +54,9 @@ const Menu = ({  addToCart }) => {
                   value={varient}
                   onChange={(e) => setVarient(e.target.value)}
                 >
-                  {item.varients.map((varient,index) => {
+                  {item.varients.map((varient,keys) => {
                     return (
-                      <option key={index} value={varient}>
+                      <option key={keys} value={varient}>
                         {varient}
                       </option>
                     );
@@ -71,7 +71,7 @@ const Menu = ({  addToCart }) => {
                   onChange={(e) => setQuantity(e.target.value)}
                 >
                   {[...Array(10).keys()].map((x, idx) => {
-                    return <option value={idx + 1}>{idx + 1}</option>;
+                    return <option key={idx} value={idx + 1}>{idx + 1}</option>;
                   })}
                 </select>
               </div>
