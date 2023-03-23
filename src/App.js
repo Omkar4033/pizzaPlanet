@@ -100,7 +100,7 @@ const App = () => {
             )}
             <Route
               path="/OrderForm"
-              element={<OrderForm curruser={curruser} />}
+              element={<OrderForm curruser={curruser} cart={cart} addToCart={addToCart} />}
             />
             <Route path="/confirmation" element={<ConfirmationPage />} />
             {curruser && (

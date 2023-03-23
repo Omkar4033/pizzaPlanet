@@ -67,8 +67,8 @@ const AddProduct = ({curruser}) => {
           <h2 className="text-3xl my-3  mx-5 font-bold mb-4">Add a Product</h2>
 
       <div className="main flex  md:flex-row  ">
-      <div className="container flex w-1/2 ">
-        <div className=" my-6   mx-auto w-2/3">
+      <div className="container flex w-[120px] ">
+        <div className=" my-6   mx-auto w-[80px]">
           <form
             method="post"
             className="bg-white flex  shadow-md rounded w-screen px-8 pt-6 pb-8 mb-4"

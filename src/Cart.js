@@ -39,13 +39,19 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart }) => {
                     <div>
                       <h2 className="text-lg">{item.name}</h2>
                       <p className="text-gray-500 text-sm">
-                        Price: ₹{item.Itemprice}
-                      </p>
-                      <p className="text-gray-500 text-sm">
                         Varient: {item.varient}
                       </p>
                       <p className="text-gray-500 text-sm">
                         Quantity: {item.quantity}
+                      </p>
+                    { item.name === "#Custom Pizza" && <p className="text-gray-500 text-sm">
+                        Toppings: {item?.toppings}
+                      </p>}
+                    {  item.name === "#Custom Pizza" &&  <p className="text-gray-500 text-sm">
+                        Crust: {item?.crust}
+                      </p>}
+                      <p className="text-gray-500 text-sm">
+                        Price: ₹{item.Itemprice}
                       </p>
                     </div>
                     <button onClick={() => RemoveFromCart(item)}>

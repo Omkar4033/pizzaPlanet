@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const OrderForm = ({ curruser }) => {
+const OrderForm = ({ curruser, addToCart,cart }) => {
   const [formData, setFormData] = useState({
     size: "",
     crust: "",
@@ -26,17 +25,27 @@ const OrderForm = ({ curruser }) => {
       alert("Please fill all the required fields.");
       return;
     } else {
-      const pizza = {
-        name: curruser.name,
-        toppings: toppings,
-        crust: crust,
-        size: size,
-        price: 80,
-      };
+      // const pizza = {
+      //   name: "#Custom Pizza",
+      //   toppings: toppings,
+      //   crust: crust,
+      //   size: size,
+      //   price: 80,
+      // };
       try {
-        const res = await axios.post("/api/pizzas", pizza);
-        console.log(res);
-
+        // const res = await axios.post("/api/pizzas", pizza);
+        // console.log(res);
+       
+          var cartItem = {
+            name: "#Custom Pizza",
+            varient: size,
+            quantity: quantity,
+            toppings:toppings,
+            crust:crust,
+            Itemprice:400
+          };
+          addToCart(cartItem);
+          console.log(cart);
         notify();
         setFormData({
           size: "",

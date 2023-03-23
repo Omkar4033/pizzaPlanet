@@ -9,7 +9,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { NavLink } from "react-router-dom";
 const Sidebar = () => {
   return (
-    <div className="bg-white mt-1 h-[100vh] w-64 px-4 hover:rounded-lg py-8">
+    <div className="bg-white mt-1 h-[100vh] w-[240px] px-4 hover:rounded-lg py-8">
       <div className="flex flex-col items-center justify-center "></div>
       <nav>
         <ul>
