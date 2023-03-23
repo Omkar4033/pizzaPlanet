@@ -9,6 +9,15 @@ import Cart from "./Cart";
 import Login from "./Login";
 import Register from "./Register";
 import Orders from "./components/Orders";
+import AdminDashboard from "./Admin/AdminDashBoard";
+import WrongAdmin from "./Admin/WrongAdmin";
+import Dashboard from "./Admin/Dashboard";
+import AddProduct from "./Admin/AddProduct";
+import AdminOrders from "./Admin/Orders";
+import Pizzas from "./Admin/Pizzas";
+import Profile from "./Admin/Profile";
+import AdminUsers from "./Admin/Users";
+import ReportBug from "./Admin/ReportBug";
 const App = () => {
   const [curruser, setCurruser] = useState({});
   const [cart, setcart] = useState([]);
@@ -97,12 +106,48 @@ const App = () => {
             {curruser && (
               <Route path="/orders" element={<Orders curruser={curruser} />} />
             )}
-            { curruser &&  curruser.isAdmin && (
+            {
+               {/* curruser &&  curruser.isAdmin */}
+                && (
               <Route
                 path="/admin"
-                element={<Login updateUser={updateUser} />}
+                element={<AdminDashboard updateUser={updateUser} />}
               />
             )}
+            { curruser &&  !curruser.isAdmin && (
+              <Route
+                path="/admin"
+                element={<WrongAdmin updateUser={updateUser} />}
+              />
+            )}
+            <Route
+              path="/admindashboard"
+              element={<Dashboard curruser={curruser} />}
+            />
+            <Route
+              path="/adminaddproduct"
+              element={<AddProduct curruser={curruser} />}
+            />
+            <Route
+              path="/adminorders"
+              element={<AdminOrders curruser={curruser} />}
+            />
+            <Route
+              path="/adminpizzas"
+              element={<Pizzas curruser={curruser} />}
+            />
+            <Route
+              path="/adminusers"
+              element={<AdminUsers curruser={curruser} />}
+            />
+            <Route
+              path="/adminprofile"
+              element={<Profile curruser={curruser} />}
+            />
+            <Route
+              path="/adminreportbug"
+              element={<ReportBug curruser={curruser} />}
+            />
           </Routes>
         </div>
       </Router>

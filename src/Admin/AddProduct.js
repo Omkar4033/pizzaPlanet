@@ -1,14 +1,18 @@
+import Sidebar from './Sidebar'
 import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const OrderForm = ({ curruser }) => {
+const AddProduct = ({curruser}) => {
   const [formData, setFormData] = useState({
+    Name:"",
+    Image:"",
     size: "",
     crust: "",
     toppings: [],
     quantity: 1,
   });
+  // const [ImageView, setImage] = useState("");
   const notify = () => toast("Added to cart !");
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -20,25 +24,29 @@ const OrderForm = ({ curruser }) => {
 
     console.log("inside the submit function");
 
-    const { size, crust, toppings, quantity } = formData;
+    const { Name,Image, size, crust, toppings, quantity } = formData;
 
     if (!size || !crust || toppings.length === 0 || quantity < 1) {
       alert("Please fill all the required fields.");
       return;
     } else {
       const pizza = {
-        name: curruser.name,
+        Name: Name,
+        Image:Image,
         toppings: toppings,
         crust: crust,
         size: size,
         price: 80,
       };
+        // setImage(Image);
       try {
         const res = await axios.post("/api/pizzas", pizza);
         console.log(res);
 
         notify();
         setFormData({
+          Name:"",
+          Image:"",
           size: "",
           crust: "",
           toppings: [],
@@ -52,16 +60,39 @@ const OrderForm = ({ curruser }) => {
 
   console.log(formData);
   return (
-    <div className="main flex  md:flex-row justify-center ">
+    <div className="h-screen flex overflow-hidden bg-gray-100">
+      <Sidebar/>
+      <div className="div">
+
+          <h2 className="text-3xl my-3  mx-5 font-bold mb-4">Add a Product</h2>
+
+      <div className="main flex  md:flex-row  ">
       <div className="container flex w-1/2 ">
         <div className=" my-6   mx-auto w-2/3">
-          <h2 className="text-3xl font-bold mb-4">Build Your Pizza</h2>
           <form
             method="post"
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            className="bg-white flex  shadow-md rounded w-screen px-8 pt-6 pb-8 mb-4"
             onSubmit={handleSubmit}
           >
-            <div className="">
+            <div className="first ">
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="Name"
+                >
+                  Name
+                </label>
+                <input
+                  className="shadow placeholder:text-slate-600 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="Name"
+                  name="Name"
+                  placeholder='Name of Product'
+                  multiple={false}
+                  value={formData.Name}
+                  onChange={handleInputChange}
+                >
+                </input>
+              </div>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 font-bold mb-2"
@@ -156,7 +187,7 @@ const OrderForm = ({ curruser }) => {
                 type="submit"
                 className="bg-yellow-500  text-white py-3 my-10 px-6 rounded-full font-bold text-lg shadow-lg hover:bg-yellow-600 "
               >
-                Order Now
+               Add
               </button>
 
               <ToastContainer
@@ -172,14 +203,39 @@ const OrderForm = ({ curruser }) => {
                 theme="light"
               />
             </div>
+            <div className="second flex text-center justify-center">
+             {/* <img src={ImageView} alt="selected Image"/> */}
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="Name"
+                >
+                 Upload Image
+                </label>
+                <input
+                  className="shadow text-red-500 placeholder:text-slate-600 appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                  id="Image"
+                  type="file"
+                  name="Image"
+                  placeholder='Upload Product Image'
+                  multiple={false}
+                  value={formData.Image}
+                  onChange={handleInputChange}
+                >
+                </input>
+              </div>
+            </div>
           </form>
         </div>
-      </div>
-      <div className="img w-1/2 flex  justify-start  my-16">
-        <img alt="Img" className="object-contain" src={process.env.PUBLIC_URL + "Images/Order.png"} />
+
       </div>
     </div>
-  );
-};
+      </div>
+     
+    </div>
+  )
+}
 
-export default OrderForm;
+export default AddProduct;
+
+

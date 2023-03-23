@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <div className="hero-section relative h-screen">
       <img
-        className="absolute inset-0 w-full h-full object-fill"
+        className="absolute inset-0 w-full h-full object-cover"
         src={process.env.PUBLIC_URL + "Images/Hero.jpg"}
         alt="Pizza"
       />

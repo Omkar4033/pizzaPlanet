@@ -35,7 +35,7 @@ const Checkout = ({
     if (!error) {
       try {
         const response = await axios.post("/api/orders/placeorder", {
-          curruser:curruser,
+          curruser:curruser || "omkar Raghu",
           subtotal: subtotal,
           payment_method: paymentMethod.id,
           cartItems: cartItems,

@@ -9,7 +9,7 @@ const Navbar = ({ cart, curruser, updateUser }) => {
     updateUser(null);
   };
 
-  console.log("value in navbar is", cart);
+console.log("navbar user is: ",curruser);
 
   return (
     <nav className="bg-white inset-0 shadow-lg">
