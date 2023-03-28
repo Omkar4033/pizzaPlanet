@@ -3,31 +3,40 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import ReactPaginate from "react-paginate";
-// import Modal from "react-modal";
+import Pagination from "../components/Pagination";
 
-const data_per_page=5;
+const data_per_page = 8;
 
 const Orders = ({ curruser }) => {
   const [orders, setOrders] = useState([]);
-  const [currpage, setCurrpage] = useState(0);
+  const [currpage, setCurrpage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+
+  const starting_index = currpage * data_per_page - data_per_page;
+  const ending_index = currpage * data_per_page;
+  const Total_pages = Math.ceil(orders.length / data_per_page);
   useEffect(() => {
     const Fetchorders = async () => {
       try {
-        const {data} = await axios.get("/api/orders");
-       setOrders(data);
+        const { data } = await axios.get("/api/orders");
+        setOrders(data);
       } catch (error) {
         console.log(error.message);
       }
     };
 
     Fetchorders();
-  }, []);
+  }, [orders]);
 
-  const handlePageChange=({selected:select})=>{
-    console.log("selected page is ",select)
-  }
+  const setInputs = (e, order) => {
+    
+    const selectedorder= orders.find((item)=> item._id === order._id)
+    if(selectedorder)
+    {
+      selectedorder.status=e.target.value;
+    }
+  };
+
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -43,57 +52,86 @@ const Orders = ({ curruser }) => {
     }
   };
 
-
   console.log(orders);
+
+  const changepage = (newpage) => {
+    setCurrpage(newpage);
+  };
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
       <Sidebar />
 
       <div className=" m-5 max-w-7xl">
-        <h1 className="text-3xl font-bold mb-6">All Orders</h1>
-        <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-1 font-semibold text-gray-700">Index</div>
-          <div className="col-span-1 font-semibold text-gray-700">Order ID</div>
-          <div className="col-span-1 font-semibold text-gray-700">Date</div>
-          <div className="col-span-1 font-semibold text-gray-700">Total</div>
-          <div className="col-span-1 font-semibold text-gray-700">Status</div>
-          <div className="col-span-1 font-semibold text-gray-700">
+        <h1 className="text-3xl font-bold mb-4">All Orders</h1>
+        <div className="grid grid-cols-6 gap-10">
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Index
+          </div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Date
+          </div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Order ID
+          </div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Total
+          </div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Status
+          </div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
             Cancel Order
           </div>
         </div>
-        {orders.map((order, index) => (
-          <div
-            key={order._id}
-            className="grid grid-cols-6 gap-5 shadow-md py-5"
-          >
-            <div className="col-span-1 mx-4 ">{index + 1}</div>
-            <div className="col-span-1 ">#{order._id}</div>
-            <div className="col-span-1">
-              {moment(order.createdAt).format("Do MMM YYYY, h:mm a")}
+        <div className="">
+          {orders.slice(starting_index, ending_index).map((order, index) => (
+            <div
+              key={order._id}
+              className="grid grid-cols-6 gap-8 shadow-md py-5"
+            >
+              <div className="col-span-1 text-center  ">
+                {starting_index + index + 1}
+              </div>
+              <div className="col-span-1 text-start">
+                {moment(order.createdAt).format("Do MMM YYYY, h:mm a")}
+              </div>
+              <div className="col-span-1 text-center ">#{order._id}</div>
+              <div className="col-span-1 text-center text-green-600 ">
+                ₹{order.totalPrice}
+              </div>
+              <div className="col-span-1 text-center">
+                <select
+                  className="shadow hover:border-yellow-400 appearance-none border rounded  w-[1/2] mx-1  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="one"
+                  name="size"
+                  value={order.status}
+                  onChange={(e) => setInputs(e, order)}
+                >
+                  <option value="new">new</option>
+                  <option value="preaparing">preparing</option>
+                  <option value="ready">ready</option>
+                  <option value="delivered">delivered</option>
+                </select>
+              </div>
+              <div
+                className="col-span-1 text-center "
+                onClick={() => removeOrder(order)}
+              >
+                <button onClick={toggleModal}>
+                  {" "}
+                  <ClearOutlinedIcon
+                    style={{ color: "orangered", font: "1rem" }}
+                  />
+                </button>
+              </div>
             </div>
-            <div className="col-span-1">{order.totalPrice}</div>
-            <div className="col-span-1">{order.status}</div>
-            <div className="col-span-1 " onClick={() => removeOrder(order)}>
-              <button onClick={toggleModal}>
-                {" "}
-                <ClearOutlinedIcon
-                  style={{ color: "orangered", font: "1rem" }}
-                />
-              </button>
-            </div>
-          </div>
-        ))}
-        <ReactPaginate
-          previousLabel={"← Previous"}
-          nextLabel={"Next →"}
-          pageCount={data_per_page}
-          onPageChange={handlePageChange}
-          containerClassName={"pagination"}
-          nextLinkClassName={"pagination__link"}
-          previousLinkClassName={"pagination__link"}
-          activeClassName={"pagination__link--active"}
-          disabledClassName={"pagination__link--disabled"}
+          ))}
+        </div>
+        <Pagination
+          currpage={currpage}
+          Total_pages={Total_pages}
+          changepage={changepage}
         />
       </div>
     </div>

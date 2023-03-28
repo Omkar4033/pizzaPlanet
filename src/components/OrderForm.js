@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const OrderForm = ({ curruser, addToCart,cart }) => {
+const OrderForm = ({ curruser, addToCart, cart }) => {
   const [formData, setFormData] = useState({
     size: "",
     crust: "",
@@ -25,27 +25,17 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
       alert("Please fill all the required fields.");
       return;
     } else {
-      // const pizza = {
-      //   name: "#Custom Pizza",
-      //   toppings: toppings,
-      //   crust: crust,
-      //   size: size,
-      //   price: 80,
-      // };
       try {
-        // const res = await axios.post("/api/pizzas", pizza);
-        // console.log(res);
-       
-          var cartItem = {
-            name: "#Custom Pizza",
-            varient: size,
-            quantity: quantity,
-            toppings:toppings,
-            crust:crust,
-            Itemprice:400
-          };
-          addToCart(cartItem);
-          console.log(cart);
+        var cartItem = {
+          name: "#Custom Pizza",
+          varient: size,
+          varients: ["small", "medium", "large"],
+          quantity: quantity,
+          prices: [{ small: 300, medium: 350, large: 400 }],
+          Itemprice: 400,
+        };
+        addToCart(cartItem);
+        console.log(cart);
         notify();
         setFormData({
           size: "",
@@ -64,7 +54,7 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
     <div className="main flex  md:flex-row justify-center ">
       <div className="container flex w-1/2 ">
         <div className=" my-6   mx-auto w-2/3">
-          <h2 className="text-3xl font-bold mb-4">Build Your Pizza</h2>
+          <h2 className="text-3xl font-bold mb-4">Build Your own Pizza</h2>
           <form
             method="post"
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -82,7 +72,6 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="size"
                   name="size"
-                  multiple={false}
                   value={formData.size}
                   onChange={handleInputChange}
                 >
@@ -103,7 +92,6 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="toppings"
                   name="toppings"
-                  multiple={false}
                   value={formData.toppings}
                   onChange={handleInputChange}
                 >
@@ -126,7 +114,6 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="crust"
                   name="crust"
-                  multiple={false}
                   value={formData.crust}
                   onChange={handleInputChange}
                 >
@@ -150,8 +137,7 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="quantity"
                   name="quantity"
-                  multiple={false} 
-                  value={formData.quantity}
+                  value={parseInt(formData.quantity)}
                   onChange={handleInputChange}
                 >
                   <option value="">Select Quantity</option>
@@ -185,7 +171,11 @@ const OrderForm = ({ curruser, addToCart,cart }) => {
         </div>
       </div>
       <div className="img w-1/2 flex  justify-start  my-16">
-        <img alt="Img" className="object-contain" src={process.env.PUBLIC_URL + "Images/Order.png"} />
+        <img
+          alt="Img"
+          className="object-contain"
+          src={process.env.PUBLIC_URL + "Images/Order.png"}
+        />
       </div>
     </div>
   );

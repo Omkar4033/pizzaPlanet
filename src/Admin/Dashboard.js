@@ -1,5 +1,4 @@
 import Sidebar from "./Sidebar";
-import CachedIcon from "@mui/icons-material/Cached";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
@@ -8,13 +7,20 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import Pagination from "../components/Pagination";
+const data_per_page = 5;
+
+
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [total,setTotal]=useState(0);
-  // const [pending, setPending] = useState(0);
-  // const [completed, setCompleted] = useState(0);
+  const [currpage, setCurrpage] = useState(1);
   const [Amount, setAmount] = useState(0);
+
+  const starting_index = currpage * data_per_page - data_per_page;
+  const ending_index = currpage * data_per_page;
+  const Total_pages = Math.ceil(orders.length / data_per_page);
   useEffect(() => {
     const Fetchorders = async () => {
       try {
@@ -48,6 +54,9 @@ const Dashboard = () => {
     }
   };
 
+  const changepage = (newpage) => {
+    setCurrpage(newpage);
+  };
   console.log(orders);
   return (
     <div className="h-screen flex overflow-hidden bg-gray-100">
@@ -97,50 +106,41 @@ const Dashboard = () => {
         </div>
         <div className="bottom h-[80vh]">
           <h2 className="mx-5 font-semibold">Recent Orders:</h2>
-          <div className=" m-5 max-w-7xl">
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-1 font-semibold text-gray-700">
-                Index
-              </div>
-              <div className="col-span-1 font-semibold text-gray-700">
-                Order ID
-              </div>
-              <div className="col-span-1 font-semibold text-gray-700">Date</div>
-              <div className="col-span-1 font-semibold text-gray-700">
-                Total
-              </div>
-              <div className="col-span-1 font-semibold text-gray-700">
-                Status
-              </div>
-              <div className="col-span-1 font-semibold text-gray-700">
-                Cancel Order
-              </div>
-            </div>
-            {orders.map((order, index) => (
-              <div
-                key={order._id}
-                className="grid grid-cols-6 gap-5 shadow-md py-5"
-              >
-                <div className="col-span-1 mx-6">{index + 1}</div>
-                <div className="col-span-1 ">#{order._id}</div>
-                <div className="col-span-1">
-                  {moment(order.createdAt).format("Do MMM YYYY, h:mm a")}
-                </div>
-                <div className="col-span-1">{order.totalPrice}</div>
-                <div className="col-span-1">
-                {order.status}
-                </div>
-                <div className="col-span-1 " onClick={() => removeOrder(order)}>
-                  <button onClick={toggleModal}>
-                    {" "}
-                    <ClearOutlinedIcon
-                      style={{ color: "orangered", font: "1rem" }}
-                    />
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className=" m-4 max-w-7xl">
+          <div className="grid grid-cols-6 gap-10">
+          <div className="col-span-1 text-center font-semibold text-gray-700">Index</div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">Date</div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">Order ID</div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">Total</div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">Status</div>
+          <div className="col-span-1 text-center font-semibold text-gray-700">
+            Cancel Order
           </div>
+        </div>
+        {orders.slice(starting_index,ending_index).map((order, index) => (
+          <div
+            key={order._id}
+            className="grid grid-cols-6 gap-8 shadow-md py-5"
+          >
+            <div className="col-span-1 text-center  ">{starting_index +  index + 1}</div>
+            <div className="col-span-1 text-start">
+              {moment(order.createdAt).format("Do MMM YYYY, h:mm a")}
+            </div>
+            <div className="col-span-1 text-center ">#{order._id}</div>
+            <div className="col-span-1 text-center  ">₹{order.totalPrice}</div>
+            <div className="col-span-1 text-center">{order.status}</div>
+            <div className="col-span-1 text-center " onClick={() => removeOrder(order)}>
+              <button onClick={toggleModal}>
+                {" "}
+                <ClearOutlinedIcon
+                  style={{ color: "orangered", font: "1rem" }}
+                />
+              </button>
+            </div>
+          </div>
+        ))}
+          </div>
+          <Pagination currpage={currpage} Total_pages={Total_pages} changepage={changepage} />
         </div>
       </div>
     </div>

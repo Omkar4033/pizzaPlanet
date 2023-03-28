@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import Menu from "./Menu";
+import Menu from "./Screens/Menu";
 import OrderForm from "./components/OrderForm";
 import ConfirmationPage from "./components/ConfirmationPage";
-import Cart from "./Cart";
-import Login from "./Login";
-import Register from "./Register";
+import Cart from "./Screens/Cart";
+import Login from "./Screens/Login";
+import Register from "./Screens/Register";
 import Orders from "./components/Orders";
 import AdminDashboard from "./Admin/AdminDashBoard";
 import WrongAdmin from "./Admin/WrongAdmin";
@@ -18,9 +18,14 @@ import Pizzas from "./Admin/Pizzas";
 import Profile from "./Admin/Profile";
 import AdminUsers from "./Admin/Users";
 import ReportBug from "./Admin/ReportBug";
+import Contact from "./Screens/Contact";
+import About from "./Screens/About";
+import Error from "./Screens/Error";
+import SingleProduct from "./components/SingleProduct";
 const App = () => {
   const [curruser, setCurruser] = useState({});
   const [cart, setcart] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
   useEffect(() => {
     try {
       setCurruser(JSON.parse(localStorage.getItem("MypizzaUser")));
@@ -41,33 +46,47 @@ const App = () => {
   };
   const saveCart = (mycart) => {
     localStorage.setItem("cart", mycart);
+    let total = cart.reduce((total, item) => total + item?.Itemprice, 0);
+    setSubTotal(total);
     setcart(mycart);
   };
 
   const addToCart = (cartItem, varient, quantity) => {
     let newCart = cart;
-    const index = cart.indexOf(cartItem);
-    if (index >= 0) {
-      const filtered = cart.filter((item) => item.name === cartItem.name);
-      filtered.varient = varient;
-      filtered.quantity = quantity;
-      newCart[index] = filtered;
+    let itemToUpdate = cart.find((food) => food.name === cartItem.name);
+    if (itemToUpdate) {
+      itemToUpdate.quantity = itemToUpdate.quantity + quantity;
+      itemToUpdate.varient = varient;
+      itemToUpdate.Itemprice =
+        cartItem.prices[0][varient] * itemToUpdate.quantity;
+
+      if(itemToUpdate.quantity > 10)
+      {
+        itemToUpdate.quantity=10;
+      }
     } else {
       newCart = [].concat(cart, cartItem);
     }
-    setcart(newCart);
+
     saveCart(newCart);
   };
   const RemoveFromCart = (cartItem, varient, quantity) => {
     let newCart = cart;
-    const index = cart.indexOf(cartItem);
-    if (index >= 0) {
-      const filtered = cart.filter((item) => item !== cartItem);
-      newCart = filtered;
-    } else {
-      newCart = [].concat(cart, cartItem);
+    let itemToUpdate = cart.find((food) => food.name === cartItem.name);
+    if (itemToUpdate) {
+      itemToUpdate.quantity = itemToUpdate.quantity - quantity;
+      itemToUpdate.varient = varient;
+      itemToUpdate.Itemprice =
+        cartItem.prices[0][varient] * itemToUpdate.quantity;
+
+      if(itemToUpdate.quantity <= 0)
+      {
+        let filtered= cart.filter((food)=> food.name !== itemToUpdate.name)
+        newCart=filtered;
+      }
+      
     }
-    setcart(newCart);
+
     saveCart(newCart);
   };
 
@@ -83,6 +102,13 @@ const App = () => {
             />
             <Route path="/login" element={<Login updateUser={updateUser} />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<About curruser={curruser} />} />
+            <Route path="/Contact" element={<Contact curruser={curruser} />} />
+            <Route path="*" element={<Error />} />
+            <Route
+              path="/pizzas/:id"
+              element={<SingleProduct addToCart={addToCart} />}
+            ></Route>
             <Route
               path="/cart"
               element={
@@ -91,6 +117,7 @@ const App = () => {
                   cart={cart}
                   RemoveFromCart={RemoveFromCart}
                   addToCart={addToCart}
+                  subTotal={subTotal}
                 />
               }
             />
@@ -100,52 +127,58 @@ const App = () => {
             )}
             <Route
               path="/OrderForm"
-              element={<OrderForm curruser={curruser} cart={cart} addToCart={addToCart} />}
+              element={
+                <OrderForm
+                  curruser={curruser}
+                  cart={cart}
+                  addToCart={addToCart}
+                />
+              }
             />
             <Route path="/confirmation" element={<ConfirmationPage />} />
             {curruser && (
               <Route path="/orders" element={<Orders curruser={curruser} />} />
             )}
-            {
-               {/* curruser &&  curruser.isAdmin */}
-                && (
+            {{
+              /* curruser &&  curruser.isAdmin */
+            } && (
               <Route
                 path="/admin"
                 element={<AdminDashboard updateUser={updateUser} />}
               />
             )}
-            { curruser &&  !curruser.isAdmin && (
+            {curruser && !curruser.isAdmin && (
               <Route
                 path="/admin"
                 element={<WrongAdmin updateUser={updateUser} />}
               />
             )}
             <Route
-              path="/admindashboard"
+              path="/admin/dashboard"
               element={<Dashboard curruser={curruser} />}
             />
             <Route
-              path="/adminaddproduct"
+              path="/admin/addproduct"
               element={<AddProduct curruser={curruser} />}
             />
             <Route
-              path="/adminorders"
+              path="/admin/orders"
               element={<AdminOrders curruser={curruser} />}
             />
             <Route
-              path="/adminpizzas"
+              path="/admin/pizzas"
               element={<Pizzas curruser={curruser} />}
             />
             <Route
-              path="/adminusers"
+              path="/admin/users"
               element={<AdminUsers curruser={curruser} />}
             />
             <Route
-              path="/adminprofile"
+              path="/admin/profile"
               element={<Profile curruser={curruser} />}
             />
             <Route
-              path="/adminreportbug"
+              path="/admin/reportbug"
               element={<ReportBug curruser={curruser} />}
             />
           </Routes>

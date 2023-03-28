@@ -23,19 +23,31 @@ console.log("navbar user is: ",curruser);
                   width={"42px"}
                   height="8px"
                   alt="Img"
-                  src={process.env.PUBLIC_URL + "Images/logo.jpg"}
+                  src={ "/"+ process.env.PUBLIC_URL + "Images/logo.jpg"}
                 />
                 pizzaPlanet
               </span>
             </Link>
-            {
+            
               <Link
                 to="/menu"
                 className="py-6 px-3 text-gray-600 hover:text-gray-800"
               >
                 Menu
               </Link>
-            }
+              <Link
+                to="/about"
+                className="py-6 px-3 text-gray-600 hover:text-gray-800"
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                className="py-6 px-3 text-gray-600 hover:text-gray-800"
+              >
+                Contact Us
+              </Link>
+            
           </div>
 
           <div className="right flex">
@@ -53,7 +65,7 @@ console.log("navbar user is: ",curruser);
                         setDropdown(!dropdown);
                       }}
                     >
-                      {curruser.name}
+                      {curruser?.name}
                       <svg
                         className="-mr-1 ml-2 h-5 w-5"
                         viewBox="0 0 20 20"
@@ -112,7 +124,7 @@ console.log("navbar user is: ",curruser);
             >
               <ShoppingBagOutlinedIcon />
             </Link>
-            {cart.length > 0 && (
+            {cart?.length > 0 && (
               <span className="text-sm h-5 w-5 justify-center border-white  flex font-bold rounded-xl my-4  bg-orange-500 text-white">
                 {cart.length}
               </span>

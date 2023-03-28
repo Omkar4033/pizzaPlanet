@@ -3,6 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 const Profile = () => {
   const [user, setUser] = useState({});
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+ 
+  const [message, setMessage] = useState(null);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+   
+  };
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,73 +32,47 @@ const Profile = () => {
     <div className="h-screen flex overflow-hidden bg-gray-100">
       <Sidebar />
 
-      <div className="bg-gray-100">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Profile</h1>
-        <form className="max-w-md mx-auto">
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="username"
-            >
-              Username
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              value={user.username}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email"
-              type="email"
-              value={user.email}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="confirmPassword"
-            >
-              Confirm Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="confirmPassword"
-              type="password"
-            />
-          </div>
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Save
-          </button>
-        </form>
-        <Link
-          to="/admin/dashboard"
-          className="block text-blue-500 mt-4 hover:underline"
-        >
-          Back to Dashboard
-        </Link>
+      <div className="flex flex-col mt-10 items-center w-full h-screen bg-gray-100">
+        <h1 className="text-4xl font-bold mb-6">My Profile</h1>
+        <div className="w-96">
+          {message && (
+            <div className="bg-green-500 p-3 mb-4 text-white">{message}</div>
+          )}
+          <form onSubmit={submitHandler}>
+            <div className="mb-4">
+              <label
+                htmlFor="name"
+                className="block text-gray-700 font-bold mb-2"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-bold mb-2"
+              >
+                Email Address
+              </label>
+              <input
+                type="email"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
