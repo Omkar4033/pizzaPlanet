@@ -56,7 +56,11 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal }) => {
                               src={process.env.PUBLIC_URL + "Images/logo.jpg"}
                               alt={item?.name}
                             />
-                            {item?.name}
+                            <div className="flex-col">
+                            <div className="text-lg">{item?.name}</div>
+                            <div className="text-sm">Toppings :{item?.toppings}</div>
+                            <div className="text-sm">Crust :{item?.crust}</div>
+                            </div>
                           </div>
                           <div className="w-1/2 mt-8">
                             <select

@@ -34,6 +34,8 @@ const Menu = ({ addToCart, cart }) => {
       quantity: qty,
       varients:item.varients,
       prices: item.prices,
+      toppings:item.toppings,
+      crust:item.crust,
       Itemprice: item.prices[0]["small"] * qty,
     };
     addToCart(cartItem,"small",1);

@@ -29,6 +29,8 @@ const OrderForm = ({ curruser, addToCart, cart }) => {
         var cartItem = {
           name: "#Custom Pizza",
           varient: size,
+          toppings:toppings,
+          crust:crust,
           varients: ["small", "medium", "large"],
           quantity: quantity,
           prices: [{ small: 300, medium: 350, large: 400 }],
