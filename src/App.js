@@ -21,6 +21,7 @@ import ReportBug from "./Admin/ReportBug";
 import Contact from "./Screens/Contact";
 import About from "./Screens/About";
 import Error from "./Screens/Error";
+import Payment from "./Screens/Payment";
 import SingleProduct from "./components/SingleProduct";
 const App = () => {
   const [curruser, setCurruser] = useState({});
@@ -90,6 +91,10 @@ const App = () => {
     saveCart(newCart);
   };
 
+  const RemoveAll=()=>{
+    let newCart=[];
+    saveCart(newCart);
+  }
   return (
     <>
       <Router>
@@ -104,6 +109,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About curruser={curruser} />} />
             <Route path="/Contact" element={<Contact curruser={curruser} />} />
+            <Route path="/payment" element={<Payment cart={cart} subTotal={subTotal} curruser={curruser} />} />
             <Route path="*" element={<Error />} />
             <Route
               path="/pizzas/:id"
@@ -118,6 +124,7 @@ const App = () => {
                   RemoveFromCart={RemoveFromCart}
                   addToCart={addToCart}
                   subTotal={subTotal}
+                  RemoveAll={RemoveAll}
                 />
               }
             />

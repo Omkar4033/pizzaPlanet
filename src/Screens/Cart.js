@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PaymentForm from "../components/PaymentForm";
 import { NavLink } from "react-router-dom";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal }) => {
+const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll }) => {
   const [cartItems, setCart] = useState([]);
   const [varient] = useState();
   const [showpayment, setShowpayment] = useState(false);
@@ -19,11 +19,11 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal }) => {
   };
 
   return (
-    <div className="container flex my-5">
+    <div className="container flex-col my-5">
       <div className="first  flex ">
         {
           <div className="flex-col m-auto">
-            <h1 className="text-2xl ml-5  font-bold mb-4">Your Cart</h1>
+            <h1 className="text-2xl ml-5  font-bold mb-4">My Cart</h1>
             <div className="container  ">
               {cartItems.length === 0 ? (
                 <div>
@@ -119,27 +119,40 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal }) => {
                 </div>
               )}
 
-              {cartItems.length !== 0 && (
-                <div className="flex justify-start mt-8">
+
+
+               {cartItems.length !==0 && <div className="flex justify-around">
+                <div className="subTotal">
+                <div className="flex justify-center mt-8">
                   <span className="font-bold">Subtotal:</span>
                   <span>₹{subTotal.toFixed(2)}</span>
                 </div>
-              )}
-              {cartItems.length !== 0 && (
+             
                 <NavLink>
                   <button
                     onClick={() => setShowpayment(true)}
-                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    className="bg-green-500 flex justify-center mb-10 mt-2 m-auto  hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                   >
                     Checkout
                   </button>
                 </NavLink>
-              )}
+                </div>
+                <div className="clearcart mr-10 mt-8">
+                <button
+                    onClick={ RemoveAll}
+                    className="bg-yellow-500 flex justify-center mb-10 mt-2   hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Clear Cart
+                  </button>
+                </div>
+                </div>}
+            
+             
             </div>
           </div>
         }
       </div>
-      <div className="second   w-1/2 flex m-auto ">
+      <div className="second   w-full flex justify-center ">
         {showpayment && (
           <PaymentForm
             curruser={curruser}

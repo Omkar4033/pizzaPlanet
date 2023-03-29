@@ -7,7 +7,7 @@ const stripePromise = loadStripe(
   "pk_test_51MfQSHSBGOkkt5PzZgKErm86dw8LUj6EdhvULzoLf060lnQvWeHWBYhNxyLF8jd0cjB2G33o8L1Iy6QGfdYFEDCg00lRlxT1tf"
 );
 
-const PaymentForm = ({ curruser,cartItems, subtotal, setShowpayment }) => {
+const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment }) => {
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentError, setPaymentError] = useState("");
 
@@ -27,7 +27,7 @@ const PaymentForm = ({ curruser,cartItems, subtotal, setShowpayment }) => {
         <Checkout
           curruser={curruser}
           cartItems={cartItems}
-          subtotal={subtotal}
+          subtotal={subTotal}
           onPaymentComplete={setPaymentComplete}
           onPaymentError={setPaymentError}
         />
