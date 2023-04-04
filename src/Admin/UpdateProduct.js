@@ -1,17 +1,46 @@
 import Sidebar from "./Sidebar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GrImage } from "react-icons/gr";
-const AddProduct = ({ curruser }) => {
+
+const GET_SINGLE_OBJECT_API_ENDPOINT = "/api/pizzas/:id";
+
+const UpdateProduct = ({}) => {
+  const [item, setItem] = useState();
+  const { id } = useParams();
+  useEffect(() => {
+    const FetchSingleproduct = async () => {
+      try {
+        const { data } = await axios.get(
+          GET_SINGLE_OBJECT_API_ENDPOINT.replace(":id", id)
+        );
+        setItem(data);
+        setFormData({
+          Name: data?.name,
+          Image: "",
+          size: data?.varient,
+          crust: data?.crust,
+          toppings: data?.toppings,
+          quantity: data?.quantity,
+        });
+        console.log("items to be updated is : ", data);
+      } catch (error) {
+        console.error("Error fetching single object:", error);
+      }
+    };
+
+    FetchSingleproduct();
+  }, [id]);
   const [formData, setFormData] = useState({
     Name: "",
     Image: "",
     size: "",
     crust: "",
-    toppings: [],
-    quantity: 1,
+    toppings: "",
+    quantity: "",
   });
   // const [ImageView, setImage] = useState("");
   const notify = () => toast("Added to cart !");
@@ -27,37 +56,33 @@ const AddProduct = ({ curruser }) => {
 
     const { Name, Image, size, crust, toppings, quantity } = formData;
 
+    const pizza = {
+      name: Name,
+      Image: Image.substring(12),
+      toppings: toppings,
+      crust: crust,
+      size: size,
+      quantity: Number(quantity),
+      price: 80,
+    };
+    // setImage(Image);
+    console.log("selected Image is : ", Image);
+    try {
+      const id = item._id;
+      const { data } = await axios.put(`/api/pizzas/${id}`, pizza);
+      console.log("changed data is ", data);
 
-    if (!size || !crust || toppings.length === 0 || quantity < 1) {
-      alert("Please fill all the required fields.");
-      return;
-    } else {
-      const pizza = {
-        name: Name,
-        Image: Image.substring(12),
-        toppings: toppings,
-        crust: crust,
-        size: size,
-        price: 80,
-      };
-      // setImage(Image);
-     console.log("selected Image is : ",Image);
-      try {
-        const res = await axios.post("/api/pizzas", pizza);
-        console.log(res);
-
-        notify();
-        setFormData({
-          Name: "",
-          Image: "",
-          size: "",
-          crust: "",
-          toppings: [],
-          quantity: 1,
-        });
-      } catch (error) {
-        console.log("found error!");
-      }
+      notify();
+      setFormData({
+        Name: "",
+        Image: "",
+        size: "",
+        crust: "",
+        toppings: [],
+        quantity: 1,
+      });
+    } catch (error) {
+      console.log("found error!");
     }
   };
 
@@ -66,7 +91,7 @@ const AddProduct = ({ curruser }) => {
     <div className="h-screen flex overflow-hidden bg-gray-100">
       <Sidebar />
       <div className="div">
-        <h2 className="text-3xl my-3  mx-8 font-bold mb-4">Add a Product</h2>
+        <h2 className="text-3xl my-3  mx-8 font-bold mb-4">Update a Product</h2>
 
         <div className="main flex  md:flex-row  ">
           <div className="container flex w-[120px] ">
@@ -189,7 +214,7 @@ const AddProduct = ({ curruser }) => {
                       type="submit"
                       className="bg-yellow-500  text-white py-3 my-10 px-6 rounded-full font-bold text-lg shadow-lg hover:bg-yellow-600 "
                     >
-                      Add
+                      Update
                     </button>
 
                     <ToastContainer
@@ -211,13 +236,14 @@ const AddProduct = ({ curruser }) => {
                       <div className="flex justify-center">
                         {formData.Image ? (
                           <img
-                            style={{ background: "white", objectFit: "contain" }}
+                            style={{
+                              background: "white",
+                              objectFit: "contain",
+                            }}
                             width={"250px"}
                             height="250px"
                             alt="Img"
-                            src={
-                              `"/" + process.env.PUBLIC_URL + "Images/${formData.Image}`
-                            }
+                            src={`"/" + process.env.PUBLIC_URL + "Images/${formData.Image}`}
                           />
                         ) : (
                           <GrImage
@@ -259,4 +285,4 @@ const AddProduct = ({ curruser }) => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;

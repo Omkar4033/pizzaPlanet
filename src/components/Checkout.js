@@ -8,6 +8,8 @@ const Checkout = ({
   cartItems,
   onPaymentComplete,
   onPaymentError,
+  formData,
+  setLoading,
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -19,29 +21,30 @@ const Checkout = ({
       type: "card",
       card: elements.getElement(CardElement),
       billing_details: {
-        name: "John Doe",
-        email: "johndoe@example.com",
+        name: formData.firstName + " " + formData.lastName,
+        email: formData.email,
         address: {
-          line1: "123 Main St",
-          line2: "Apartment 5",
-          city: "New York",
-          state: "NY",
-          postal_code: "10001",
+          line1: formData.streetAddress,
+          city: formData.city,
+          state: formData.state,
+          postal_code: formData.zipCode,
           country: "US",
         },
       },
     });
 
     if (!error) {
+      setLoading(true);
       try {
         const response = await axios.post("/api/orders/placeorder", {
-          curruser:curruser || "omkar Raghu",
+          curruser: curruser || "omkar Raghu",
           subtotal: subtotal,
           payment_method: paymentMethod.id,
           cartItems: cartItems,
           currency: "inr",
         });
         onPaymentComplete(true);
+        setLoading(false);
         console.log(response.data);
       } catch (error) {
         setErrorMessage(error.message);
@@ -57,10 +60,10 @@ const Checkout = ({
   const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
-        fontSize: '16px',
-        color: '#32325d',
-        '::placeholder': {
-          color: '#aab7c4',
+        fontSize: "16px",
+        color: "#32325d",
+        "::placeholder": {
+          color: "#aab7c4",
         },
       },
     },
@@ -75,9 +78,7 @@ const Checkout = ({
           Credit or debit card
         </label>
         <div className="p-2 border border-gray-300 rounded">
-          <CardElement
-            options={CARD_ELEMENT_OPTIONS}
-          />
+          <CardElement options={CARD_ELEMENT_OPTIONS} />
         </div>
       </div>
       {errorMessage && (

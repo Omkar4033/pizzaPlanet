@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Checkout from "./Checkout";
-import { Link } from "react-router-dom";
+import Spinner from "./Spinner"
 const stripePromise = loadStripe(
   "pk_test_51MfQSHSBGOkkt5PzZgKErm86dw8LUj6EdhvULzoLf060lnQvWeHWBYhNxyLF8jd0cjB2G33o8L1Iy6QGfdYFEDCg00lRlxT1tf"
 );
 
-const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment }) => {
+const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment ,formData}) => {
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentError, setPaymentError] = useState("");
+  const [Loading,setLoading]=useState(false);
 
   return (
-    <div className="w-full rounded-lg flex-col  shadow-orange-200 max-w-sm border  p-8">
-      <span className="flex  mx-auto">
+    <div className="w-full  rounded-lg flex-col max-h-max shadow-orange-200 max-w-sm border  p-8">
+     <div className="">
+     <span className="flex  mx-auto">
         <img
           style={{ background: "white", objectFit: "fill" }}
           width={"42px"}
@@ -21,25 +23,23 @@ const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment }) => {
           alt="Img"
           src={process.env.PUBLIC_URL + "Images/logo.jpg"}
         />
-        <h1 className="text-2xl font-bold mb-4">Payment Details</h1>
+        <h1 className="text-2xl font-bold mb-4">Card Details</h1>
       </span>
-      <Elements stripe={stripePromise}>
+     { Loading && !paymentComplete   ? <Spinner/> : <Elements stripe={stripePromise}>
         <Checkout
+        formData={formData}
           curruser={curruser}
           cartItems={cartItems}
           subtotal={subTotal}
           onPaymentComplete={setPaymentComplete}
           onPaymentError={setPaymentError}
+          setLoading={setLoading}
         />
       </Elements>
-      <span
-        onClick={() => setShowpayment(false)}
-        className="underline mx-auto my-6"
-      >
-        close
-      </span>
-      {paymentComplete && <p className="text-green-500">Payment complete!</p>}
-      {paymentComplete && <Link className='underline-offset-1' to='/confirmation'>go to confirmation page</Link>}
+      }
+     </div>
+     { paymentComplete && window.location.assign('/confirmation')}
+     
       {paymentError && <p className="text-red-500">{paymentError}</p>}
     </div>
   );

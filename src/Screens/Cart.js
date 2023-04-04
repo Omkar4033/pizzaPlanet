@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PaymentForm from "../components/PaymentForm";
 import { NavLink } from "react-router-dom";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll }) => {
@@ -128,7 +127,7 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
                   <span>₹{subTotal.toFixed(2)}</span>
                 </div>
              
-                <NavLink>
+                <NavLink to='/payment'>
                   <button
                     onClick={() => setShowpayment(true)}
                     className="bg-green-500 flex justify-center mb-10 mt-2 m-auto  hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
@@ -152,7 +151,7 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
           </div>
         }
       </div>
-      <div className="second   w-full flex justify-center ">
+      {/* <div className="second   w-full flex justify-center ">
         {showpayment && (
           <PaymentForm
             curruser={curruser}
@@ -161,7 +160,7 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
             subTotal={subTotal.toFixed(2)}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

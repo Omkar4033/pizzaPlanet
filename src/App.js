@@ -23,6 +23,7 @@ import About from "./Screens/About";
 import Error from "./Screens/Error";
 import Payment from "./Screens/Payment";
 import SingleProduct from "./components/SingleProduct";
+import UpdateProduct from  "./Admin/UpdateProduct";
 const App = () => {
   const [curruser, setCurruser] = useState({});
   const [cart, setcart] = useState([]);
@@ -188,6 +189,10 @@ const App = () => {
               path="/admin/reportbug"
               element={<ReportBug curruser={curruser} />}
             />
+            <Route
+              path="/admin/pizzas/update/:id"
+              element={<UpdateProduct  />}
+            ></Route>
           </Routes>
         </div>
       </Router>

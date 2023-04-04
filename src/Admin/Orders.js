@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import Pagination from "../components/Pagination";
+import EditIcon from '@mui/icons-material/Edit';
 
 const data_per_page = 8;
 
@@ -28,18 +29,24 @@ const Orders = ({ curruser }) => {
     Fetchorders();
   }, [orders]);
 
-  const setInputs = (e, order) => {
-    
-    const selectedorder= orders.find((item)=> item._id === order._id)
-    if(selectedorder)
-    {
-      selectedorder.status=e.target.value;
+  const setInputs =async (e, order) => {
+    try {
+
+      const id= order._id;
+      order.status=e.target.value;
+      console.log(order);
+      const {data}=await axios.patch(`/api/orders/${id}`,order);
+       console.log("changed data is ",data);
+      
+    } catch (error) {
+      
     }
   };
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
+  const ChangeDetails=(order)=>{
+    console.log(order);
+  }
+
 
   const removeOrder = async (order) => {
     console.log("This order wants to be removed: ", order._id);
@@ -109,19 +116,23 @@ const Orders = ({ curruser }) => {
                   onChange={(e) => setInputs(e, order)}
                 >
                   <option value="new">new</option>
-                  <option value="preaparing">preparing</option>
+                  <option value="preparing">preparing</option>
                   <option value="ready">ready</option>
                   <option value="delivered">delivered</option>
                 </select>
               </div>
               <div
-                className="col-span-1 text-center "
-                onClick={() => removeOrder(order)}
+                className="col-span-1  text-center "
               >
-                <button onClick={toggleModal}>
+                <button onClick={()=>ChangeDetails(order)}>
+                <EditIcon
+                  className="to-yellow-500 mx-6"
+                />
+                </button>
+                <button onClick={() => removeOrder(order)}>
                   {" "}
                   <ClearOutlinedIcon
-                    style={{ color: "orangered", font: "1rem" }}
+                    className="to-yellow-500"
                   />
                 </button>
               </div>

@@ -17,6 +17,8 @@ const Dashboard = () => {
   const [total,setTotal]=useState(0);
   const [currpage, setCurrpage] = useState(1);
   const [Amount, setAmount] = useState(0);
+  const [PendingOrders,setPendingOrders]=useState(0);
+  const [CompletedOrders,setCompletedOrders]=useState(0);
 
   const starting_index = currpage * data_per_page - data_per_page;
   const ending_index = currpage * data_per_page;
@@ -26,18 +28,33 @@ const Dashboard = () => {
       try {
         const { data } = await axios.get("/api/orders");
         setOrders(data);
-        let price=0;
+        let price=0,pending=0,completed=0;
         setTotal(data.length);
-        data.filter(d => price+=d.totalPrice);
-    
+        data.filter((d) => {
+          if(d.status === "preparing")
+          {
+            pending++;
+          }
+          if(d.status === "delivered")
+          {
+            completed++;
+          }
+          price+=d.totalPrice;
+          return '';
+        }
+        );
+        
+        setPendingOrders(pending);
+        setCompletedOrders(completed);
         setAmount(price);
+       
       } catch (error) {
         console.log(error.message);
       }
     };
 
     Fetchorders();
-  }, []);
+  }, [orders]);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -81,7 +98,7 @@ const Dashboard = () => {
               </div>
               <div className="text flex-col mt-2 justify-center">
                 <div className=" text-center text-lg text-slate-200">Pending Orders</div>
-                <div className="text-2xl text-center font-mono font-medium m-1 text-slate-200">12</div>
+                <div className="text-2xl text-center font-mono font-medium m-1 text-slate-200">{PendingOrders}</div>
               </div>
             </div>
             <div className="third text-center  h-[12vh] w-[38vh] rounded-lg  bg-green-600 flex p-1   ">
@@ -90,7 +107,7 @@ const Dashboard = () => {
               </div>
               <div className="text flex-col  mt-2 justify-center">
                 <div className=" text-center text-lg text-slate-200">Completed Orders</div>
-                <div className="text-2xl text-center font-mono font-medium m-1 text-slate-200">12</div>
+                <div className="text-2xl text-center font-mono font-medium m-1 text-slate-200">{CompletedOrders}</div>
               </div>
             </div>
             <div className="fourth  text-center h-[12vh] w-[38vh] rounded-lg  bg-green-600 flex p-1  ">

@@ -17,12 +17,12 @@ const Orders = ({ curruser }) => {
   const ending_index = currpage * data_per_page;
   const Total_pages = Math.ceil(orders.length / data_per_page);
 
-
+ 
 
 
   useEffect(() => {
     axios
-      .get("/api/orders")
+      .get(`/api/orders?sort=timestamp:desc`)
       .then((res) => {
         const temp = res.data;
         setOrders(temp); 
