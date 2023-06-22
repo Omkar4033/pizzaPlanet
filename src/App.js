@@ -32,39 +32,39 @@ const App = () => {
     try {
       setCurruser(JSON.parse(localStorage.getItem("MypizzaUser")));
       if (localStorage.getItem("cart")) {
-        setcart(JSON.parse(localStorage.getItem("cart")));
+        let Initial_cart = JSON.parse(localStorage.getItem("cart"));
+        let total = Initial_cart.reduce((total, item) => total + item?.Itemprice, 0);
+        setSubTotal(total);
+        setcart(Initial_cart);
       }
     } catch (error) {
       console.error(error);
       localStorage.clear();
     }
-  }, [cart]);
-
-  console.log(curruser);
+  }, []);
 
   const updateUser = (user) => {
     localStorage.setItem("MypizzaUser", JSON.stringify(user));
     setCurruser(user);
   };
   const saveCart = (mycart) => {
-    localStorage.setItem("cart", mycart);
+    localStorage.setItem("cart", JSON.stringify(mycart));
     let total = cart.reduce((total, item) => total + item?.Itemprice, 0);
     setSubTotal(total);
     setcart(mycart);
   };
 
-  const addToCart = (cartItem, varient, quantity) => {
+  const addToCart = (cartItem, varient, qty) => {
     let newCart = cart;
     let itemToUpdate = cart.find((food) => food.name === cartItem.name);
     if (itemToUpdate) {
-      itemToUpdate.quantity = itemToUpdate.quantity + quantity;
+      itemToUpdate.quantity = itemToUpdate.quantity + qty;
       itemToUpdate.varient = varient;
       itemToUpdate.Itemprice =
         cartItem.prices[0][varient] * itemToUpdate.quantity;
 
-      if(itemToUpdate.quantity > 10)
-      {
-        itemToUpdate.quantity=10;
+      if (itemToUpdate.quantity > 10) {
+        itemToUpdate.quantity = 10;
       }
     } else {
       newCart = [].concat(cart, cartItem);
@@ -81,21 +81,19 @@ const App = () => {
       itemToUpdate.Itemprice =
         cartItem.prices[0][varient] * itemToUpdate.quantity;
 
-      if(itemToUpdate.quantity <= 0)
-      {
-        let filtered= cart.filter((food)=> food.name !== itemToUpdate.name)
-        newCart=filtered;
+      if (itemToUpdate.quantity <= 0) {
+        let filtered = cart.filter((food) => food.name !== itemToUpdate.name);
+        newCart = filtered;
       }
-      
     }
 
     saveCart(newCart);
   };
 
-  const RemoveAll=()=>{
-    let newCart=[];
+  const RemoveAll = () => {
+    let newCart = [];
     saveCart(newCart);
-  }
+  };
   return (
     <>
       <Router>
@@ -110,7 +108,17 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About curruser={curruser} />} />
             <Route path="/Contact" element={<Contact curruser={curruser} />} />
-            <Route path="/payment" element={<Payment cart={cart} subTotal={subTotal} curruser={curruser} />} />
+            <Route
+              path="/payment"
+              element={
+                <Payment
+                  cart={cart}
+                  subTotal={subTotal}
+                  RemoveAll={RemoveAll}
+                  curruser={curruser}
+                />
+              }
+            />
             <Route path="*" element={<Error />} />
             <Route
               path="/pizzas/:id"
@@ -191,7 +199,7 @@ const App = () => {
             />
             <Route
               path="/admin/pizzas/update/:id"
-              element={<UpdateProduct  />}
+              element={<UpdateProduct />}
             ></Route>
           </Routes>
         </div>
