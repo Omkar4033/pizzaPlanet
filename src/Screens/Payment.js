@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import PaymentForm from '../components/PaymentForm'
-const Payment = ({curruser,cart,subTotal}) => {
+const Payment = ({curruser,cart,subTotal,RemoveAll}) => {
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -10,7 +10,7 @@ const Payment = ({curruser,cart,subTotal}) => {
     state: "",
     zipCode: "",
     phone: "",
-    email: "",
+    email: curruser?.email,
   });
   const [showpayment, setShowpayment] = useState(false);
   const handleChange = (e) => {
@@ -168,6 +168,7 @@ const Payment = ({curruser,cart,subTotal}) => {
             curruser={curruser}
             cartItems={cart}
             subTotal={subTotal}
+            RemoveAll={RemoveAll}
           />
       }
      </div>

@@ -61,7 +61,7 @@ const Menu = ({ addToCart, cart }) => {
             <div className="p-4">
               <div className="second flex justify-around mt-4">
                 <div className="text-gray-700 my-auto font-medium">
-                  Price : {item.prices[0]["small"] * 1}
+                  Price : {isNaN(item?.prices[0]['small'] * 1) ? 300 : (item.prices[0]['small'] * 3)}
                 </div>
                 <button
                   className="bg-green-500 text-white py-2 px-4 rounded  hover:bg-green-600 transition-colors duration-300"

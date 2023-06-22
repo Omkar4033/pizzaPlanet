@@ -10,6 +10,7 @@ const Checkout = ({
   onPaymentError,
   formData,
   setLoading,
+  RemoveAll
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -21,12 +22,12 @@ const Checkout = ({
       type: "card",
       card: elements.getElement(CardElement),
       billing_details: {
-        name: formData.firstName + " " + formData.lastName,
-        email: formData.email,
+        name: formData?.firstName + " " + formData?.lastName,
+        email: formData?.email,
         address: {
-          line1: formData.streetAddress,
-          city: formData.city,
-          state: formData.state,
+          line1: formData?.streetAddress,
+          city: formData?.city,
+          state: formData?.state,
           postal_code: formData.zipCode,
           country: "US",
         },
@@ -45,6 +46,7 @@ const Checkout = ({
         });
         onPaymentComplete(true);
         setLoading(false);
+        RemoveAll();
         console.log(response.data);
       } catch (error) {
         setErrorMessage(error.message);

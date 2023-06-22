@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll }) => {
-  const [cartItems, setCart] = useState([]);
-  const [varient] = useState();
+const Cart = ({
+  curruser,
+  cart,
+  addToCart,
+  RemoveFromCart,
+  subTotal,
+  RemoveAll,
+}) => {
+  const [cartItems, setCart] = useState(cart);
   const [showpayment, setShowpayment] = useState(false);
   useEffect(() => {
     setCart(cart);
@@ -56,9 +62,13 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
                               alt={item?.name}
                             />
                             <div className="flex-col">
-                            <div className="text-lg">{item?.name}</div>
-                            <div className="text-sm">Toppings :{item?.toppings}</div>
-                            <div className="text-sm">Crust :{item?.crust}</div>
+                              <div className="text-lg">{item?.name}</div>
+                              <div className="text-sm">
+                                Toppings :{item?.toppings}
+                              </div>
+                              <div className="text-sm">
+                                Crust :{item?.crust}
+                              </div>
                             </div>
                           </div>
                           <div className="w-1/2 mt-8">
@@ -66,7 +76,7 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
                               className="shadow hover:border-yellow-400 appearance-none border rounded  w-[1/2] mx-1  py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                               id="one"
                               name="size"
-                              value={varient}
+                              value={item.varient}
                               onChange={(e) => setInputs(e, index, item)}
                             >
                               {item?.varients?.map((v, keys) => {
@@ -118,35 +128,33 @@ const Cart = ({ curruser, cart, addToCart, RemoveFromCart, subTotal,RemoveAll })
                 </div>
               )}
 
+              {cartItems.length !== 0 && (
+                <div className="flex justify-around">
+                  <div className="subTotal">
+                    <div className="flex justify-center mt-8">
+                      <span className="font-bold">Subtotal:</span>
+                      <span>₹{subTotal.toFixed(2)}</span>
+                    </div>
 
-
-               {cartItems.length !==0 && <div className="flex justify-around">
-                <div className="subTotal">
-                <div className="flex justify-center mt-8">
-                  <span className="font-bold">Subtotal:</span>
-                  <span>₹{subTotal.toFixed(2)}</span>
+                    <NavLink to="/payment">
+                      <button
+                        onClick={() => setShowpayment(true)}
+                        className="bg-green-500 flex justify-center mb-10 mt-2 m-auto  hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Checkout
+                      </button>
+                    </NavLink>
+                  </div>
+                  <div className="clearcart mr-10 mt-8">
+                    <button
+                      onClick={RemoveAll}
+                      className="bg-yellow-500 flex justify-center mb-10 mt-2   hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Clear Cart
+                    </button>
+                  </div>
                 </div>
-             
-                <NavLink to='/payment'>
-                  <button
-                    onClick={() => setShowpayment(true)}
-                    className="bg-green-500 flex justify-center mb-10 mt-2 m-auto  hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Checkout
-                  </button>
-                </NavLink>
-                </div>
-                <div className="clearcart mr-10 mt-8">
-                <button
-                    onClick={ RemoveAll}
-                    className="bg-yellow-500 flex justify-center mb-10 mt-2   hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Clear Cart
-                  </button>
-                </div>
-                </div>}
-            
-             
+              )}
             </div>
           </div>
         }

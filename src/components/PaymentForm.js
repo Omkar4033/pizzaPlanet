@@ -7,7 +7,7 @@ const stripePromise = loadStripe(
   "pk_test_51MfQSHSBGOkkt5PzZgKErm86dw8LUj6EdhvULzoLf060lnQvWeHWBYhNxyLF8jd0cjB2G33o8L1Iy6QGfdYFEDCg00lRlxT1tf"
 );
 
-const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment ,formData}) => {
+const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment ,formData,RemoveAll}) => {
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [Loading,setLoading]=useState(false);
@@ -34,10 +34,12 @@ const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment ,formData}) 
           onPaymentComplete={setPaymentComplete}
           onPaymentError={setPaymentError}
           setLoading={setLoading}
+          RemoveAll={RemoveAll}
         />
       </Elements>
       }
      </div>
+     
      { paymentComplete && window.location.assign('/confirmation')}
      
       {paymentError && <p className="text-red-500">{paymentError}</p>}

@@ -22,13 +22,13 @@ const Orders = ({ curruser }) => {
 
   useEffect(() => {
     axios
-      .get(`/api/orders?sort=timestamp:desc`)
+      .get(`/api/orders?email=${curruser.email}`)
       .then((res) => {
         const temp = res.data;
         setOrders(temp); 
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [curruser]);
 
   const toggleModal = () => {
     setIsOpen(!isOpen);

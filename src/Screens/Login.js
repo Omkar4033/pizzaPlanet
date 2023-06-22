@@ -24,10 +24,11 @@ const Login = ({ updateUser }) => {
         email: email,
         password: password,
       };
-      const { data } = await axios.post("/api/users/login", user);
-      updateUser(data);
-       window.location.assign('/');
 
+      const { data } = await axios.post("/api/users/login", user);
+      console.log(data);
+      updateUser(data.user);
+       window.location.assign('/');
     }
   };
 
@@ -81,7 +82,9 @@ const Login = ({ updateUser }) => {
             Forgot Password?
           </a>
         </div>
-        <Link className="pt-6 underline text-black" to='/register'><p>New User ?</p></Link>
+        <Link className="pt-6 underline text-black" to="/register">
+          <p>New User ?</p>
+        </Link>
       </form>
     </div>
   );
