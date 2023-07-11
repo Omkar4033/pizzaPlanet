@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import Pagination from "../components/Pagination";
+import { Add } from "@mui/icons-material";
 
 const data_per_page = 8;
 
@@ -21,6 +22,7 @@ const Menu = ({ addToCart, cart }) => {
     };
     fetchmenu();
   }, []);
+
   const changepage = (newpage) => {
     setCurrpage(newpage);
   };
@@ -32,14 +34,17 @@ const Menu = ({ addToCart, cart }) => {
       name: item.name,
       varient: "small",
       quantity: qty,
-      varients:item.varients,
+      varients: item.varients,
       prices: item.prices,
-      toppings:item.toppings,
-      crust:item.crust,
-      Itemprice: item.prices[0]["small"] * qty,
+      toppings: item.toppings,
+      crust: item.crust,
+      Itemprice: item?.prices[0].default[0]['small'] * qty,
     };
-    addToCart(cartItem,"small",1);
-    
+
+   
+
+    addToCart(cartItem, "small", 1);
+    console.log("ITemPrice is : ",item?.prices[0].default[0]['small'] );
   };
 
   return (
@@ -47,7 +52,10 @@ const Menu = ({ addToCart, cart }) => {
       <h2 className="text-3xl mx-6 font-bold mb-4">Menu</h2>
       <div className="grid lg:grid-cols-4 justify-center   m-auto md:grid-cols-2 sm:grid-cols-1  gap-4">
         {menu.slice(starting_index, ending_index).map((item, index) => (
-          <div key={index} className="bg-white    shadow-md rounded-lg overflow-hidden">
+          <div
+            key={index}
+            className="bg-white    shadow-md rounded-lg overflow-hidden"
+          >
             <NavLink key={item._id} to={`/pizzas/${item._id}`}>
               <img
                 src={process.env.PUBLIC_URL + "Images/sample.jpg"}
@@ -61,7 +69,10 @@ const Menu = ({ addToCart, cart }) => {
             <div className="p-4">
               <div className="second flex justify-around mt-4">
                 <div className="text-gray-700 my-auto font-medium">
-                  Price : {isNaN(item?.prices[0]['small'] * 1) ? 300 : (item.prices[0]['small'] * 3)}
+                  Price :{" "}
+                  {isNaN(item?.prices[0]["small"] * 1)
+                    ? 300
+                    : item.prices[0]["small"] * 3}
                 </div>
                 <button
                   className="bg-green-500 text-white py-2 px-4 rounded  hover:bg-green-600 transition-colors duration-300"

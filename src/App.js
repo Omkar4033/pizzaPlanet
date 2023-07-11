@@ -43,6 +43,9 @@ const App = () => {
     }
   }, []);
 
+ 
+  
+
   const updateUser = (user) => {
     localStorage.setItem("MypizzaUser", JSON.stringify(user));
     setCurruser(user);
@@ -61,7 +64,7 @@ const App = () => {
       itemToUpdate.quantity = itemToUpdate.quantity + qty;
       itemToUpdate.varient = varient;
       itemToUpdate.Itemprice =
-        cartItem.prices[0][varient] * itemToUpdate.quantity;
+      cartItem?.prices[0].default[0][varient]  * itemToUpdate.quantity;
 
       if (itemToUpdate.quantity > 10) {
         itemToUpdate.quantity = 10;
@@ -71,6 +74,7 @@ const App = () => {
     }
 
     saveCart(newCart);
+    console.log("Cart addeed is : ",newCart);
   };
   const RemoveFromCart = (cartItem, varient, quantity) => {
     let newCart = cart;
@@ -79,7 +83,7 @@ const App = () => {
       itemToUpdate.quantity = itemToUpdate.quantity - quantity;
       itemToUpdate.varient = varient;
       itemToUpdate.Itemprice =
-        cartItem.prices[0][varient] * itemToUpdate.quantity;
+      cartItem?.prices[0].default[0][varient]  * itemToUpdate.quantity;
 
       if (itemToUpdate.quantity <= 0) {
         let filtered = cart.filter((food) => food.name !== itemToUpdate.name);

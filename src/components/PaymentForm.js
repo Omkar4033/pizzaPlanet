@@ -40,7 +40,7 @@ const PaymentForm = ({ curruser,cartItems, subTotal, setShowpayment ,formData,Re
       }
      </div>
      
-     { paymentComplete && window.location.assign('/confirmation')}
+      { paymentComplete && window.location.assign('/confirmation')} 
      
       {paymentError && <p className="text-red-500">{paymentError}</p>}
     </div>
