@@ -26,12 +26,12 @@ const SingleProduct = ({ addToCart }) => {
 
   const AddToCart = (item, varient, quantity) => {
     var cartItem = {
-      name: item.name,
+      name: item?.name,
       varient: varient,
       varients:item.varients,
       quantity: quantity,
-      prices: item.prices,
-      Itemprice: item.prices[0][varient] * quantity,
+      prices: item?.prices,
+      Itemprice: item?.prices[0].default[0][varient] * quantity,
     };
     addToCart(cartItem);
   };
@@ -227,7 +227,7 @@ const SingleProduct = ({ addToCart }) => {
             </div>
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">
-                ₹ {item?.prices[0][varient] * quantity}
+                ₹ {item?.prices[0].default[0][varient]* quantity}
               </span>
               <button
                 onClick={() => AddToCart(item, varient, quantity)}
