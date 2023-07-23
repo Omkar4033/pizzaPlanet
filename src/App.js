@@ -155,7 +155,7 @@ const App = () => {
                 />
               }
             />
-            <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/confirmation" element={<ConfirmationPage curruser={curruser} />} />
             {curruser && (
               <Route path="/orders" element={<Orders curruser={curruser} />} />
             )}

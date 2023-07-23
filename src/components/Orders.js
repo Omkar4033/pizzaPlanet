@@ -66,7 +66,7 @@ const Orders = ({ curruser }) => {
           Cancel Order
         </div>
       </div>
-      {orders.slice(starting_index,ending_index).map((order, index) => (
+      {orders.slice(starting_index,ending_index).reverse().map((order, index) => (
         <div key={order._id} className="grid grid-cols-6 gap-5 shadow-md py-5">
           <div className="col-span-1 flex justify-center">{starting_index+index + 1}</div>
           <div className="col-span-1 flex justify-start">
