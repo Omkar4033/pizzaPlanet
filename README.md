@@ -1,4 +1,7 @@
 # Getting Started with Create React App
+
+Vedio link ---> https://drive.google.com/uc?id=1Ld6RjE78x-NiHc6t1E1rqeApiAWXnwBf&export=download
+
 Here some Images related to project.
 ![image](https://github.com/Omkar4033/pizzaPlanet/assets/91587106/a7cf7e22-fe54-423d-986e-dee8825b4686)
 ![image](https://github.com/Omkar4033/pizzaPlanet/assets/91587106/8137664f-cf9d-43ea-9742-29a041ef9175)
